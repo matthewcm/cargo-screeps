@@ -18,7 +18,12 @@ readme = "README.md"
 repository = "https://github.com/rustyscreeps/cargo-screeps/"
 description = "Build tool for deploying Rust WASM code to Screeps game servers"
 
+[badges]
+travis-ci = { repository = "rustyscreeps/cargo-screeps" }
+appveyor = { repository = "rustyscreeps/cargo-screeps" }
+
 [dependencies]
+shellwords = "1"
 base64 = "0.10"
 clap = "2"
 # We rely on the output format of cargo-web, which is not a publicly guaranteed property.

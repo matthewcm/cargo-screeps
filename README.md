@@ -2,6 +2,8 @@ cargo-screeps
 =============
 
 [![crates.io version badge][cratesio-badge]][crate]
+[![Travis Build Status][travis-image]][travis-builds]
+[![Windows Build Status][appveyor-image]][appveyor-builds]
 
 Build tool for deploying Rust WASM repositories to [Screeps][screeps] game servers.
 
@@ -148,3 +150,7 @@ cargo screeps build
 [`cargo-web`]: https://github.com/koute/cargo-web
 [screepsmod-auth]: https://www.npmjs.com/package/screepsmod-auth
 [screeps]: https://screeps.com/
+[travis-image]: https://travis-ci.org/rustyscreeps/cargo-screeps.svg?branch=master
+[travis-builds]: https://travis-ci.org/rustyscreeps/cargo-screeps
+[appveyor-image]: https://ci.appveyor.com/api/projects/status/4atvp5lh1srv36q3/branch/master?svg=true
+[appveyor-builds]: https://ci.appveyor.com/project/rustyscreeps/cargo-screeps
