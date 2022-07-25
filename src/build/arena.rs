@@ -121,18 +121,19 @@ fn process_js(file_name: &Path, wasm_file_name: &Path, input: &str) -> Result<St
     // add polyfills for TextEncoder/TextDecoder as well as base64 conversion,
     // replace loader functions, and embed the base64-encoded wasm module in the mjs file
     let bindgen_output_regex = regex::Regex::new(&format!(
-        "(?s)(.+)\n{}\n.+{}\n.+({}.+){}.+{}.*",
+        "(?s)(.+)\n{}\n.+{}\n.+({}.+){}.+({}){}.*",
         regex::escape("async function load(module, imports) {"),
-        regex::escape("async function init(input) {"),
         regex::escape("const imports = {};"),
-        regex::escape("if (typeof input === 'string'"),
+        regex::escape("return imports;"),
+        regex::escape("cachedUint8Memory0 = new Uint8Array(wasm.memory.buffer);"),
+        regex::escape("async function init(input) {"),
         regex::escape("export default init;"),
     ))
     .expect("expected pre-set regex to succeed");
 
     let captures = bindgen_output_regex.captures(input).ok_or_else(|| {
         format_err!(
-            "'wasm-pack' generated unexpected JS output! This means it's updated without \
+            "'wasm-pack' generated unexpected JS output! Regex does not match! This means it's updated without \
              'cargo screeps' also having updated. Please report this issue to \
              https://github.com/rustyscreeps/cargo-screeps/issues and include \
              the first ~30 lines of {}",
@@ -162,10 +163,16 @@ async function init() {{
 
     const instance = await load(wasm_bytes, imports);
     wasm = instance.exports;
+
+    {}
 }}
 
 await init();
 "#,
-        wasm_file_name.file_name().and_then(OsStr::to_str).unwrap_or(""), &captures[1], &captures[2]
+        wasm_file_name.file_name().and_then(OsStr::to_str).unwrap_or(""),
+        &captures[1],
+        &captures[2],
+        &captures[3]
     ))
 }
+
